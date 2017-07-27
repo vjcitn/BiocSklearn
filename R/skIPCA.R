@@ -4,9 +4,11 @@
 #' @return matrix with rotation
 #' @examples
 #' irloc = system.file("csv/iris.csv", package="BiocSklearn")
-#' irismat = SklearnEls$np$genfromtxt(irloc, delimiter=',')
-#' skIncrPCA(irismat)[1:5,]
-#' skIncrPCA(irismat, batch_size=25L)[1:5,] # slightly different
+#' irismat = SklearnEls()$np$genfromtxt(irloc, delimiter=',')
+#' ski = skIncrPCA(irismat)
+#' ski25 = skIncrPCA(irismat, batch_size=25L) # non-default
+#' getTransformed(ski)[1:3,]
+#' getTransformed(ski25)[1:3,]
 #' @export
 skIncrPCA = function(mat, n_components, batch_size) {
  if (is(mat, "matrix")) {
@@ -22,7 +24,8 @@ skIncrPCA = function(mat, n_components, batch_size) {
      min(c(nc,nr)))
  if (missing(batch_size)) 
      batch_size = as.integer(min(c(nr, 5*nc)))
- skpc = SklearnEls$skd$IncrementalPCA(n_components=n_components, 
+ skpc = SklearnEls()$skd$IncrementalPCA(n_components=n_components, 
      batch_size=batch_size)
- skpc$fit_transform(mat)
+ new("SkDecomp", transform=skpc$fit_transform(mat), object=skpc,
+       method="IncrementalPCA")
 }

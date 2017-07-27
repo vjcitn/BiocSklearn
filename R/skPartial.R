@@ -6,8 +6,8 @@
 #' @return trained IncrementalPCA reference, to which 'transform' method can be applied to obtain projection for any compliant input
 #' @examples
 #' irloc = system.file("csv/iris.csv", package="BiocSklearn")
-#' irismat = SklearnEls$np$genfromtxt(irloc, delimiter=',')
-#' ta = SklearnEls$np$take
+#' irismat = SklearnEls()$np$genfromtxt(irloc, delimiter=',')
+#' ta = SklearnEls()$np$take
 #' ipc = skPartialPCA_step(ta(irismat,0:49,0L))
 #' ipc = skPartialPCA_step(ta(irismat,50:99,0L), obj=ipc)
 #' ipc = skPartialPCA_step(ta(irismat,100:149,0L), obj=ipc)
@@ -29,6 +29,6 @@ skPartialPCA_step = function(mat, n_components, obj) {
  if (missing(n_components)) n_components = as.integer(
      min(c(nc,nr)))
  if (missing(obj)) 
-    obj = SklearnEls$skd$IncrementalPCA(n_components=n_components)
+    obj = SklearnEls()$skd$IncrementalPCA(n_components=n_components)
  obj$partial_fit(mat)
 }

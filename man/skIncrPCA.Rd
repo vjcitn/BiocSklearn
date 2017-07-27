@@ -19,7 +19,9 @@ use sklearn IncrementalPCA procedure
 }
 \examples{
 irloc = system.file("csv/iris.csv", package="BiocSklearn")
-irismat = SklearnEls$np$genfromtxt(irloc, delimiter=',')
-skIncrPCA(irismat)[1:5,]
-skIncrPCA(irismat, batch_size=25L)[1:5,] # slightly different
+irismat = SklearnEls()$np$genfromtxt(irloc, delimiter=',')
+ski = skIncrPCA(irismat)
+ski25 = skIncrPCA(irismat, batch_size=25L) # non-default
+getTransformed(ski)[1:3,]
+getTransformed(ski25)[1:3,]
 }

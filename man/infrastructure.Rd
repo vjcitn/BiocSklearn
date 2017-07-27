@@ -3,7 +3,6 @@
 \name{onLoad}
 \alias{onLoad}
 \alias{.onLoad}
-\alias{SklearnEls}
 \title{onLoad}
 \usage{
 .onLoad(libname, pkgname)

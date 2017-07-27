@@ -20,6 +20,7 @@ all defaults are used
 }
 \examples{
 irloc = system.file("csv/iris.csv", package="BiocSklearn")
-irismat = SklearnEls$np$genfromtxt(irloc, delimiter=',')
-skPCA(irismat)[1:5,]
+irismat = SklearnEls()$np$genfromtxt(irloc, delimiter=',')
+skpi = skPCA(irismat)
+getTransformed(skpi)[1:5,]
 }
