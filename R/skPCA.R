@@ -12,8 +12,16 @@ setMethod("show", "SkDecomp", function(object) {
   cat("retrieve transformed data with getTransformed(),\n python reference with pyobj()\n")
 })
 setGeneric("getTransformed", function(x) standardGeneric("getTransformed"))
+#' @rdname SkDecomp-class
+#' @aliases getTransformed
+#' @param x instance of SkDecomp
+#' @exportMethod getTransformed
 setMethod("getTransformed", "SkDecomp", function(x) x@transform)
 setGeneric("pyobj", function(x) standardGeneric("pyobj"))
+#' @rdname SkDecomp-class
+#' @aliases pyobj
+#' @param x instance of SkDecomp
+#' @exportMethod pyobj
 setMethod("pyobj", "SkDecomp", function(x) x@object)
 
 #' use sklearn PCA procedure

@@ -10,6 +10,8 @@ skIncrPCA(mat, n_components, batch_size)
 \item{mat}{a matrix -- can be R matrix or numpy.ndarray}
 
 \item{n_components}{number of PCA to retrieve}
+
+\item{batch_size}{number of records to use at each iteration}
 }
 \value{
 matrix with rotation

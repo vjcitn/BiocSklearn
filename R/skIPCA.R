@@ -1,6 +1,7 @@
 #' use sklearn IncrementalPCA procedure
 #' @param mat a matrix -- can be R matrix or numpy.ndarray
 #' @param n_components number of PCA to retrieve
+#' @param batch_size number of records to use at each iteration
 #' @return matrix with rotation
 #' @examples
 #' irloc = system.file("csv/iris.csv", package="BiocSklearn")

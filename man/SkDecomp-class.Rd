@@ -3,7 +3,21 @@
 \docType{class}
 \name{SkDecomp-class}
 \alias{SkDecomp-class}
+\alias{getTransformed,SkDecomp-method}
+\alias{getTransformed}
+\alias{pyobj,SkDecomp-method}
+\alias{pyobj}
 \title{container for sklearn objects and transforms}
+\usage{
+\S4method{getTransformed}{SkDecomp}(x)
+
+\S4method{pyobj}{SkDecomp}(x)
+}
+\arguments{
+\item{x}{instance of SkDecomp}
+
+\item{x}{instance of SkDecomp}
+}
 \description{
 container for sklearn objects and transforms
 }

@@ -1,4 +1,6 @@
 #' take a step in sklearn IncrementalPCA partial fit procedure
+#' @importFrom methods is
+#' @importFrom methods new
 #' @param mat a matrix -- can be R matrix or numpy.ndarray
 #' @param n_components number of PCA to retrieve
 #' @param obj sklearn.decomposition.IncrementalPCA instance
