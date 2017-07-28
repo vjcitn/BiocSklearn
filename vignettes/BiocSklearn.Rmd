@@ -46,6 +46,7 @@ SklearnEls()
 We can acquire python documentation of included modules with
 reticulate's `py_help`:
 ```
+# py_help(SklearnEls()$skd)
 Help on package sklearn.decomposition in sklearn:
 
 NAME
@@ -148,6 +149,45 @@ ipc = skPartialPCA_step(ta(irismat,50:99,0L), obj=ipc)
 ipc = skPartialPCA_step(ta(irismat,100:149,0L), obj=ipc)
 ipc$transform(ta(irismat,0:5,0L))
 fullpc[1:5,]
+```
+
+# Interoperation with HDF5 matrix
+
+We have extracted methylation data for the Yoruban
+subcohort of CEPH from the yriMulti package.  Data
+from chr6 and chr17 are available in an HDF5 matrix
+in this BiocSklearn package.  A reference to the
+dataset through the h5py File interface is created by
+`H5matref`.
+```{r lkmref}
+fn = system.file("ban_6_17/assays.h5", package="BiocSklearn")
+ban = H5matref(fn)
+ban 
+```
+We will explicitly define the numpy matrix.
+```{r getmmm}
+np = import("numpy", convert=FALSE) # ensure
+ban$shape
+```
+We'll treat genes as records and individuals
+as features.
+```{r dotx}
+ban2 = np$matrix(ban)$T
+```
+We'll define three chunks of the data and update
+the partial PCA contributions in the object `st`.
+```{r dopart}
+st = skPartialPCA_step(ta(ban2, 0:999, 0L))
+st = skPartialPCA_step(ta(ban2, 1000:10999, 0L), obj=st)
+st = skPartialPCA_step(ta(ban2, 11000:44559, 0L), obj=st)
+sss = st$transform(ban2)
+```
+Verify against the standard PCA, checking correlation
+between the projections to the first four PCs.
+```{r dover}
+iii = skPCA(ban2)
+dim(getTransformed(iii))
+round(cor(sss[,1:4], getTransformed(iii)[,1:4]),3)
 ```
 
 # Conclusions
