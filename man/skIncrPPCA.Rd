@@ -7,6 +7,17 @@
 \usage{
 skIncrPPCA(se, chunksize, n_components, assayind = 1, ...)
 }
+\arguments{
+\item{se}{instance of SummarizedExperiment}
+
+\item{chunksize}{integer number of samples per step}
+
+\item{n_components}{integer number of PCs to compute}
+
+\item{assayind}{not used, assumed set to 1}
+
+\item{\dots}{not used}
+}
 \value{
 python instance of \code{sklearn.decomposition.incremental_pca.IncrementalPCA}
 }
@@ -19,6 +30,10 @@ to an \code{n_components}-dimensional space.  Method will acquire chunk of assay
 and transpose before computing PCA contributions.
 }
 \examples{
+# demo SE made with TENxGenomics:
+# mm = matrixSummarizedExperiment(h5path, 1:27998, 1:1500)
+# saveHDF5SummarizedExperiment(mm, "tenx_1500")
+#
 se1500 = loadHDF5SummarizedExperiment(
      system.file("hdf5/tenx_1500", package="BiocSklearn"))
 lit = skIncrPPCA(se1500[, 1:50], chunksize=5, n_components=4)

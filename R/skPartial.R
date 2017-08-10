@@ -58,13 +58,23 @@ submatGenerator = function(srcfun, rows, cols) {
 #date()
 
 #' incremental partial PCA for projection of samples from SummarizedExperiment
+#' @param se instance of SummarizedExperiment
+#' @param chunksize integer number of samples per step
+#' @param n_components integer number of PCs to compute
+#' @param assayind not used, assumed set to 1
+#' @param \dots not used
 #' @importFrom BBmisc chunk
+#' @import SummarizedExperiment
 #' @return python instance of \code{sklearn.decomposition.incremental_pca.IncrementalPCA}
 #' @aliases skIncrPPCA,SummarizedExperiment-method
 #' @note Will treat samples as records and all features (rows) as attributes, projecting
 #' to an \code{n_components}-dimensional space.  Method will acquire chunk of assay data
 #' and transpose before computing PCA contributions.
 #' @examples
+#' # demo SE made with TENxGenomics:
+#' # mm = matrixSummarizedExperiment(h5path, 1:27998, 1:1500)
+#' # saveHDF5SummarizedExperiment(mm, "tenx_1500")
+#' #
 #' se1500 = loadHDF5SummarizedExperiment(
 #'      system.file("hdf5/tenx_1500", package="BiocSklearn"))
 #' lit = skIncrPPCA(se1500[, 1:50], chunksize=5, n_components=4)

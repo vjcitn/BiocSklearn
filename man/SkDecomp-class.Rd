@@ -15,8 +15,6 @@
 }
 \arguments{
 \item{x}{instance of SkDecomp}
-
-\item{x}{instance of SkDecomp}
 }
 \description{
 container for sklearn objects and transforms

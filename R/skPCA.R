@@ -20,7 +20,6 @@ setMethod("getTransformed", "SkDecomp", function(x) x@transform)
 setGeneric("pyobj", function(x) standardGeneric("pyobj"))
 #' @rdname SkDecomp-class
 #' @aliases pyobj
-#' @param x instance of SkDecomp
 #' @exportMethod pyobj
 setMethod("pyobj", "SkDecomp", function(x) x@object)
 
