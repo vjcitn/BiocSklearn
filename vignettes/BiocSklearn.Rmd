@@ -89,7 +89,7 @@ data native to R.
 SklearnEls()$np$take(irismat, 0:2, 0L )
 ```
 
-# Dimension reduction with sklearn: illustration with iris dataset
+# Dimension reduction with sklearn
 
 We'll use R's prcomp as a first
 test to demonstrate performance of the sklearn modules
@@ -134,7 +134,44 @@ ippcab = skIncrPCA(irismat, batch_size=25L)
 round(cor(getTransformed(ippcab), fullpc),3)
 ```
 
-## Manual incremental PCA with explicit chunking
+## Partial incremental PCA 
+
+### Implicit chunking for a SummarizedExperiment
+
+We have 1500 cells from the 10x 1M neuron dataset.
+```{r lk1500}
+library(SummarizedExperiment)
+litse = loadHDF5SummarizedExperiment(
+    system.file("hdf5/tenx_1500", package="BiocSklearn"))
+litse
+```
+
+We can compute a limited number (here 4) of principal components
+with the partial incremental PCA algorithm.
+
+```{r dopartia}
+litpc = skIncrPPCA(litse[, 1:100], chunksize=20, n_components=4)
+litpc
+names(litpc)
+```
+
+This is a python object reference.  We obtain the projection
+of a subset of the samples as follows:
+```{r dopro}
+pro = litpc$transform( t( as.matrix( assay(litse[,1:20]) ) ) )
+head(pro)
+```
+
+Let's compare these results to R's native prcomp.
+```{r doRpr, cache=TRUE}
+dat = t(as.matrix(assay(litse[,1:100])))
+rpc = prcomp(dat)
+round(cor(rpc$x[1:20,1:4], pro),3)
+```
+
+
+
+### With explicit manual chunking
 
 This procedure can be used when data are provided
 in chunks, perhaps from a stream.  We iteratively
