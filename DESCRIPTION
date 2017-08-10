@@ -1,9 +1,10 @@
 Package: BiocSklearn
 Title: interface to python sklearn via Rstudio reticulate
 Description: This package provides interfaces to selected sklearn elements.
-Version: 0.0.3
+Version: 0.0.6
 Author: Vince Carey
-Depends: R (>= 3.4.0), reticulate, methods, knitr
+Suggests: knitr
+Depends: R (>= 3.4.0), reticulate, methods, SummarizedExperiment
 Maintainer: VJ Carey <stvjc@channing.harvard.edu>
 License: Artistic-2.0
 LazyLoad: yes

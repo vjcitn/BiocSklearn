@@ -29,6 +29,7 @@ ta = SklearnEls()$np$take
 ipc = skPartialPCA_step(ta(irismat,0:49,0L))
 ipc = skPartialPCA_step(ta(irismat,50:99,0L), obj=ipc)
 ipc = skPartialPCA_step(ta(irismat,100:149,0L), obj=ipc)
+head(names(ipc))
 ipc$transform(ta(irismat,0:5,0L))
 fullproj = ipc$transform(irismat)
 fullpc = prcomp(data.matrix(iris[,1:4]))$x
