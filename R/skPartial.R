@@ -57,19 +57,27 @@ submatGenerator = function(srcfun, rows, cols) {
 #
 #date()
 
-#' incremental partial PCA for projection of samples from SummarizedExperiment
+#' optionally fault tolerant incremental partial PCA for projection of samples from SummarizedExperiment
 #' @param se instance of SummarizedExperiment
 #' @param chunksize integer number of samples per step
 #' @param n_components integer number of PCs to compute
 #' @param assayind not used, assumed set to 1
+#' @param picklePath if non-null, incremental results saved here via sklearn.externals.joblib.dump, for each chunk.  If NULL, no saving of incremental results.
 #' @param \dots not used
 #' @importFrom BBmisc chunk
 #' @import SummarizedExperiment
 #' @return python instance of \code{sklearn.decomposition.incremental_pca.IncrementalPCA}
 #' @aliases skIncrPPCA,SummarizedExperiment-method
-#' @note Will treat samples as records and all features (rows) as attributes, projecting
-#' to an \code{n_components}-dimensional space.  Method will acquire chunk of assay data
+#' @note Will treat samples as records and all features (rows) 
+#' as attributes, projecting.  
+#' to an \code{n_components}-dimensional space.  Method will 
+#' acquire chunk of assay data
 #' and transpose before computing PCA contributions.
+#' In case of crash, restore from \code{picklePath} using
+#' \code{SklearnEls()$joblib$load} after loading reticulate.  You can
+#' use the \code{n_samples_seen_} component of the restored
+#' python reference to determine where to restart.
+#' You can manage resumption using \code{skPartialPCA_step}.
 #' @examples
 #' # demo SE made with TENxGenomics:
 #' # mm = matrixSummarizedExperiment(h5path, 1:27998, 1:1500)
@@ -82,7 +90,7 @@ submatGenerator = function(srcfun, rows, cols) {
 #' rpc = prcomp(dat)
 #' round(cor(rpc$x[,1:4], pypc), 3)
 #' @exportMethod skIncrPPCA
-setGeneric("skIncrPPCA", function(se, chunksize, n_components, assayind=1, ...) 
+setGeneric("skIncrPPCA", function(se, chunksize, n_components, assayind=1, picklePath="./skIdump.pkl", ...) 
     standardGeneric("skIncrPPCA"))
 setMethod("skIncrPPCA", "SummarizedExperiment", 
    function(se, chunksize, n_components, assayind=1, ...) {
@@ -95,10 +103,15 @@ setMethod("skIncrPPCA", "SummarizedExperiment",
    matgen = function(rows, cols) t(as.matrix(assay(se[rows, cols]))) # assayind handling?
    cur = skPartialPCA_step(
       submatGenerator( matgen, rowvec, chs[[1]] ), n_components )
+   if (!is.null(picklePath)) {
+      message(paste("Will save pickled interim per-chunk results in", picklePath))
+      SklearnEls()$joblib$dump(cur, filename=picklePath)
+      }
    for (i in 2:length(chs)) { 
       cat(i)
       cur = skPartialPCA_step(
         submatGenerator( matgen, rowvec, chs[[i]]), n_components, cur)
+      if (!is.null(picklePath)) SklearnEls()$joblib$dump(cur, filename=picklePath)
       }
    cur
 })
