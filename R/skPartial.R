@@ -63,6 +63,7 @@ submatGenerator = function(srcfun, rows, cols) {
 #' @param n_components integer number of PCs to compute
 #' @param assayind not used, assumed set to 1
 #' @param picklePath if non-null, incremental results saved here via sklearn.externals.joblib.dump, for each chunk.  If NULL, no saving of incremental results.
+#' @param matTx a function defaulting to force() that accepts a matrix and returns a matrix with identical dimensions, e.g., \code{function(x) log(x+1)}
 #' @param \dots not used
 #' @importFrom BBmisc chunk
 #' @import SummarizedExperiment
@@ -90,7 +91,7 @@ submatGenerator = function(srcfun, rows, cols) {
 #' rpc = prcomp(dat)
 #' round(cor(rpc$x[,1:4], pypc), 3)
 #' @exportMethod skIncrPPCA
-setGeneric("skIncrPPCA", function(se, chunksize, n_components, assayind=1, picklePath="./skIdump.pkl", ...) 
+setGeneric("skIncrPPCA", function(se, chunksize, n_components, assayind=1, picklePath="./skIdump.pkl", matTx = force, ...) 
     standardGeneric("skIncrPPCA"))
 setMethod("skIncrPPCA", "SummarizedExperiment", 
    function(se, chunksize, n_components, assayind=1, ...) {
@@ -100,7 +101,7 @@ setMethod("skIncrPPCA", "SummarizedExperiment",
    rowvec = 1:nrow(se)
    colvec = 1:ncol(se)
    chs = chunk(colvec, chunk.size=chunksize)
-   matgen = function(rows, cols) t(as.matrix(assay(se[rows, cols]))) # assayind handling?
+   matgen = function(rows, cols) t(matTx(as.matrix(assay(se[rows, cols])))) # assayind handling?
    cur = skPartialPCA_step(
       submatGenerator( matgen, rowvec, chs[[1]] ), n_components )
    if (!is.null(picklePath)) {

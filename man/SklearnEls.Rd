@@ -9,3 +9,13 @@ SklearnEls()
 \description{
 mediate access to python modules from sklearn.decomposition
 }
+\note{
+Returns a list with elements np (numpy), pd (pandas), h5py (h5py),
+skd (sklearn.decomposition), joblib (sklearn.externals.joblib), each
+referring to python modules.
+}
+\examples{
+els = SklearnEls()
+names(els$skd) # slow at first
+# try py_help(els$skd$PCA) # etc.
+}

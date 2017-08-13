@@ -3,9 +3,10 @@
 \name{skIncrPPCA}
 \alias{skIncrPPCA}
 \alias{skIncrPPCA,SummarizedExperiment-method}
-\title{incremental partial PCA for projection of samples from SummarizedExperiment}
+\title{optionally fault tolerant incremental partial PCA for projection of samples from SummarizedExperiment}
 \usage{
-skIncrPPCA(se, chunksize, n_components, assayind = 1, ...)
+skIncrPPCA(se, chunksize, n_components, assayind = 1,
+  picklePath = "./skIdump.pkl", matTx = force, ...)
 }
 \arguments{
 \item{se}{instance of SummarizedExperiment}
@@ -16,18 +17,29 @@ skIncrPPCA(se, chunksize, n_components, assayind = 1, ...)
 
 \item{assayind}{not used, assumed set to 1}
 
+\item{picklePath}{if non-null, incremental results saved here via sklearn.externals.joblib.dump, for each chunk.  If NULL, no saving of incremental results.}
+
+\item{matTx}{a function defaulting to force() that accepts a matrix and returns a matrix with identical dimensions, e.g., \code{function(x) log(x+1)}}
+
 \item{\dots}{not used}
 }
 \value{
 python instance of \code{sklearn.decomposition.incremental_pca.IncrementalPCA}
 }
 \description{
-incremental partial PCA for projection of samples from SummarizedExperiment
+optionally fault tolerant incremental partial PCA for projection of samples from SummarizedExperiment
 }
 \note{
-Will treat samples as records and all features (rows) as attributes, projecting
-to an \code{n_components}-dimensional space.  Method will acquire chunk of assay data
+Will treat samples as records and all features (rows) 
+as attributes, projecting.  
+to an \code{n_components}-dimensional space.  Method will 
+acquire chunk of assay data
 and transpose before computing PCA contributions.
+In case of crash, restore from \code{picklePath} using
+\code{SklearnEls()$joblib$load} after loading reticulate.  You can
+use the \code{n_samples_seen_} component of the restored
+python reference to determine where to restart.
+You can manage resumption using \code{skPartialPCA_step}.
 }
 \examples{
 # demo SE made with TENxGenomics:
