@@ -4,10 +4,12 @@
 \alias{skPCA}
 \title{use sklearn PCA procedure}
 \usage{
-skPCA(mat)
+skPCA(mat, ...)
 }
 \arguments{
 \item{mat}{a matrix -- can be R matrix or numpy.ndarray}
+
+\item{\dots}{additional parameters passed to sklearn.decomposition.PCA, for additional information use \code{py_help(SklearnEls()$sk$PCA)}}
 }
 \value{
 matrix with rotation
@@ -16,7 +18,7 @@ matrix with rotation
 use sklearn PCA procedure
 }
 \note{
-all defaults are used
+If no additional arguments are passed, all defaults are used.
 }
 \examples{
 irloc = system.file("csv/iris.csv", package="BiocSklearn")

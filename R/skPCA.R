@@ -25,7 +25,8 @@ setMethod("pyobj", "SkDecomp", function(x) x@object)
 
 #' use sklearn PCA procedure
 #' @param mat a matrix -- can be R matrix or numpy.ndarray
-#' @note all defaults are used
+#' @param \dots additional parameters passed to sklearn.decomposition.PCA, for additional information use \code{py_help(SklearnEls()$sk$PCA)}
+#' @note If no additional arguments are passed, all defaults are used.
 #' @return matrix with rotation
 #' @examples
 #' irloc = system.file("csv/iris.csv", package="BiocSklearn")
@@ -33,8 +34,8 @@ setMethod("pyobj", "SkDecomp", function(x) x@object)
 #' skpi = skPCA(irismat)
 #' getTransformed(skpi)[1:5,]
 #' @export
-skPCA = function(mat) {
- skpc = SklearnEls()$skd$PCA()
+skPCA = function(mat, ...) {
+ skpc = SklearnEls()$skd$PCA(...)
  new("SkDecomp", method="PCA", transform=skpc$fit_transform(mat),
     object=skpc)
 }
