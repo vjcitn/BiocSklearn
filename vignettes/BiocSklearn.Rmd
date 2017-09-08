@@ -46,6 +46,7 @@ SklearnEls()
 We can acquire python documentation of included modules with
 reticulate's `py_help`:
 ```
+# py_help(SklearnEls()$skd)
 Help on package sklearn.decomposition in sklearn:
 
 NAME
@@ -89,7 +90,7 @@ data native to R.
 SklearnEls()$np$take(irismat, 0:2, 0L )
 ```
 
-# Dimension reduction with sklearn
+# Dimension reduction with sklearn: illustration with iris dataset
 
 We'll use R's prcomp as a first
 test to demonstrate performance of the sklearn modules
@@ -134,44 +135,7 @@ ippcab = skIncrPCA(irismat, batch_size=25L)
 round(cor(getTransformed(ippcab), fullpc),3)
 ```
 
-## Partial incremental PCA 
-
-### Implicit chunking for a SummarizedExperiment
-
-We have 1500 cells from the 10x 1M neuron dataset.
-```{r lk1500}
-library(SummarizedExperiment)
-litse = loadHDF5SummarizedExperiment(
-    system.file("hdf5/tenx_1500", package="BiocSklearn"))
-litse
-```
-
-We can compute a limited number (here 4) of principal components
-with the partial incremental PCA algorithm.
-
-```{r dopartia}
-litpc = skIncrPPCA(litse[, 1:100], chunksize=20, n_components=4)
-litpc
-names(litpc)
-```
-
-This is a python object reference.  We obtain the projection
-of a subset of the samples as follows:
-```{r dopro}
-pro = litpc$transform( t( as.matrix( assay(litse[,1:20]) ) ) )
-head(pro)
-```
-
-Let's compare these results to R's native prcomp.
-```{r doRpr, cache=TRUE}
-dat = t(as.matrix(assay(litse[,1:100])))
-rpc = prcomp(dat)
-round(cor(rpc$x[1:20,1:4], pro),3)
-```
-
-
-
-### With explicit manual chunking
+## Manual incremental PCA with explicit chunking
 
 This procedure can be used when data are provided
 in chunks, perhaps from a stream.  We iteratively
@@ -183,8 +147,47 @@ ta = SklearnEls()$np$take # provide slicer utility
 ipc = skPartialPCA_step(ta(irismat,0:49,0L))
 ipc = skPartialPCA_step(ta(irismat,50:99,0L), obj=ipc)
 ipc = skPartialPCA_step(ta(irismat,100:149,0L), obj=ipc)
-chpca = ipc$transform(irismat)
-cor(chpca, fullpc)
+ipc$transform(ta(irismat,0:5,0L))
+fullpc[1:5,]
+```
+
+# Interoperation with HDF5 matrix
+
+We have extracted methylation data for the Yoruban
+subcohort of CEPH from the yriMulti package.  Data
+from chr6 and chr17 are available in an HDF5 matrix
+in this BiocSklearn package.  A reference to the
+dataset through the h5py File interface is created by
+`H5matref`.
+```{r lkmref}
+fn = system.file("ban_6_17/assays.h5", package="BiocSklearn")
+ban = H5matref(fn)
+ban 
+```
+We will explicitly define the numpy matrix.
+```{r getmmm}
+np = import("numpy", convert=FALSE) # ensure
+ban$shape
+```
+We'll treat genes as records and individuals
+as features.
+```{r dotx}
+ban2 = np$matrix(ban)$T
+```
+We'll define three chunks of the data and update
+the partial PCA contributions in the object `st`.
+```{r dopart}
+st = skPartialPCA_step(ta(ban2, 0:999, 0L))
+st = skPartialPCA_step(ta(ban2, 1000:10999, 0L), obj=st)
+st = skPartialPCA_step(ta(ban2, 11000:44559, 0L), obj=st)
+sss = st$transform(ban2)
+```
+Verify against the standard PCA, checking correlation
+between the projections to the first four PCs.
+```{r dover}
+iii = skPCA(ban2)
+dim(getTransformed(iii))
+round(cor(sss[,1:4], getTransformed(iii)[,1:4]),3)
 ```
 
 # Conclusions
