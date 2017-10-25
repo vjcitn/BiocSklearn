@@ -7,9 +7,9 @@
 H5matref(filename, dsname = "assay001")
 }
 \arguments{
-\item{dsname}{internal name of HDF5 matrix to use, defaults to 'assay001'}
+\item{filename}{a pathname to an HDF5 file}
 
-\item{file}{a pathname to an HDF5 file}
+\item{dsname}{internal name of HDF5 matrix to use, defaults to 'assay001'}
 }
 \description{
 obtain an HDF5 dataset reference suitable for handling as numpy matrix

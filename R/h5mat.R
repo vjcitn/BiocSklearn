@@ -9,7 +9,7 @@ h5mat = function( file, dsname="assay001" )
   SklearnEls()$h5py$File( file )
 
 #' obtain an HDF5 dataset reference suitable for handling as numpy matrix 
-#' @param file a pathname to an HDF5 file
+#' @param filename a pathname to an HDF5 file
 #' @param dsname internal name of HDF5 matrix to use, defaults to 'assay001'
 #' @examples
 #' fn = system.file("ban_6_17/assays.h5", package="BiocSklearn")
