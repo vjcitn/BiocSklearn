@@ -1,5 +1,5 @@
 
-.onLoad <- function(libname, pkgname) {
+.onAttach <- function(libname, pkgname) {
   # delay load foo module (will only be loaded when accessed via $)
   packageStartupMessage("checking python library availability...")
   chk <- try(import("sklearn"))
