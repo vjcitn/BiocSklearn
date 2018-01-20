@@ -11,6 +11,9 @@ H5matref(filename, dsname = "assay001")
 
 \item{dsname}{internal name of HDF5 matrix to use, defaults to 'assay001'}
 }
+\value{
+instance of (S3) "h5py._hl.dataset.Dataset"
+}
 \description{
 obtain an HDF5 dataset reference suitable for handling as numpy matrix
 }

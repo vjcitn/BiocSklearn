@@ -2,6 +2,7 @@
 #' @slot transform stored as R matrix
 #' @slot method string identifying method
 #' @slot object reference to the python object with decomposition components
+#' @return the getTransformed method returns a matrix
 #' @exportClass SkDecomp
 #' @export getTransformed
 #' @export pyobj

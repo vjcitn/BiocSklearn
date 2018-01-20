@@ -8,6 +8,7 @@
 #' els = SklearnEls()
 #' names(els$skd) # slow at first
 #' # try py_help(els$skd$PCA) # etc.
+#' @return list of (S3) "python.builtin.module"
 #' @export
 SklearnEls = function() {
   np <- import("numpy", delay_load=TRUE, convert=FALSE)

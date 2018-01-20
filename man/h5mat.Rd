@@ -11,6 +11,9 @@ h5mat(file, dsname = "assay001")
 
 \item{dsname}{internal name of HDF5 matrix to use}
 }
+\value{
+instance of (S3) h5py._hl.files.File
+}
 \description{
 create a file connection to HDF5 matrix
 }

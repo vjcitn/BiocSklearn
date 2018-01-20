@@ -6,6 +6,9 @@
 \usage{
 SklearnEls()
 }
+\value{
+list of (S3) "python.builtin.module"
+}
 \description{
 mediate access to python modules from sklearn.decomposition
 }

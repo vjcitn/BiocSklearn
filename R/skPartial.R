@@ -98,8 +98,8 @@ setMethod("skIncrPPCA", "SummarizedExperiment",
    stopifnot(assayind==1)
    n_components = as.integer(n_components)
    chunksize = as.integer(chunksize)
-   rowvec = 1:nrow(se)
-   colvec = 1:ncol(se)
+   rowvec = seq_len(nrow(se))
+   colvec = seq_len(ncol(se))
    chs = chunk(colvec, chunk.size=chunksize)
    matgen = function(rows, cols) t(matTx(as.matrix(assay(se[rows, cols])))) # assayind handling?
    cur = skPartialPCA_step(

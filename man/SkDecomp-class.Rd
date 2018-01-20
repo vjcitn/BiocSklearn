@@ -16,6 +16,9 @@
 \arguments{
 \item{x}{instance of SkDecomp}
 }
+\value{
+the getTransformed method returns a matrix
+}
 \description{
 container for sklearn objects and transforms
 }
