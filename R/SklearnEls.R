@@ -15,6 +15,7 @@ SklearnEls = function() {
   pd <- import("pandas", delay_load=TRUE)
   h5py <- import("h5py", delay_load=TRUE)
   skd <- import("sklearn.decomposition", delay_load=TRUE)
+  skcl <- import("sklearn.cluster", delay_load=TRUE)
   joblib <- import("sklearn.externals.joblib", delay_load=TRUE)
-  list(np=np, pd=pd, h5py=h5py, skd=skd, joblib=joblib)
+  list(np=np, pd=pd, h5py=h5py, skd=skd, skcl=skcl, joblib=joblib)
 }

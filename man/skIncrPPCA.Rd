@@ -46,10 +46,12 @@ You can manage resumption using \code{skPartialPCA_step}.
 # mm = matrixSummarizedExperiment(h5path, 1:27998, 1:1500)
 # saveHDF5SummarizedExperiment(mm, "tenx_1500")
 #
-se1500 = loadHDF5SummarizedExperiment(
+if (requireNamespace("HDF5Array")) {
+  se1500 = HDF5Array::loadHDF5SummarizedExperiment(
      system.file("hdf5/tenx_1500", package="BiocSklearn"))
-lit = skIncrPPCA(se1500[, 1:50], chunksize=5, n_components=4)
-round(cor(pypc <- lit$transform(dat <- t(as.matrix(assay(se1500[,1:50]))))),3)
-rpc = prcomp(dat)
-round(cor(rpc$x[,1:4], pypc), 3)
+  lit = skIncrPPCA(se1500[, 1:50], chunksize=5, n_components=4)
+  round(cor(pypc <- lit$transform(dat <- t(as.matrix(assay(se1500[,1:50]))))),3)
+  rpc = prcomp(dat)
+  round(cor(rpc$x[,1:4], pypc), 3)
+}
 }
