@@ -1,15 +1,15 @@
 Package: BiocSklearn
 Title: interface to python sklearn via Rstudio reticulate
 Description: This package provides interfaces to selected sklearn elements, and demonstrates fault tolerant use of python modules requiring extensive iteration.
-Version: 1.5.0
+Version: 1.5.1
 Author: Vince Carey
-Suggests: testthat, restfulSE, HDF5Array
+Suggests: testthat, restfulSE, HDF5Array, BiocStyle
 Depends: R (>= 3.5.0), reticulate, methods, SummarizedExperiment, knitr
 Imports: BBmisc
 Maintainer: VJ Carey <stvjc@channing.harvard.edu>
 License: Artistic-2.0
 LazyLoad: yes
 biocViews: StatisticalMethod, DimensionReduction, Infrastructure
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 SystemRequirements: python (>= 2.7), sklearn, numpy, pandas, h5py

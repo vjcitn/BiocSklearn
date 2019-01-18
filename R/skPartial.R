@@ -81,14 +81,14 @@ submatGenerator = function(srcfun, rows, cols) {
 #' You can manage resumption using \code{skPartialPCA_step}.
 #' @examples
 #' # demo SE made with TENxGenomics:
-#' # mm = matrixSummarizedExperiment(h5path, 1:27998, 1:1500)
-#' # saveHDF5SummarizedExperiment(mm, "tenx_1500")
+#' # mm = matrixSummarizedExperiment(h5path, 1:27998, 1:750)
+#' # saveHDF5SummarizedExperiment(mm, "tenx_750")
 #' #
 #' if (requireNamespace("HDF5Array")) {
-#'   se1500 = HDF5Array::loadHDF5SummarizedExperiment(
-#'      system.file("hdf5/tenx_1500", package="BiocSklearn"))
-#'   lit = skIncrPPCA(se1500[, 1:50], chunksize=5, n_components=4)
-#'   round(cor(pypc <- lit$transform(dat <- t(as.matrix(assay(se1500[,1:50]))))),3)
+#'   se750 = HDF5Array::loadHDF5SummarizedExperiment(
+#'      system.file("hdf5/tenx_750", package="BiocSklearn"))
+#'   lit = skIncrPPCA(se750[, 1:50], chunksize=5, n_components=4)
+#'   round(cor(pypc <- lit$transform(dat <- t(as.matrix(assay(se750[,1:50]))))),3)
 #'   rpc = prcomp(dat)
 #'   round(cor(rpc$x[,1:4], pypc), 3)
 #' }
