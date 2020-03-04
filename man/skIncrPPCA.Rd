@@ -5,8 +5,15 @@
 \alias{skIncrPPCA,SummarizedExperiment-method}
 \title{optionally fault tolerant incremental partial PCA for projection of samples from SummarizedExperiment}
 \usage{
-skIncrPPCA(se, chunksize, n_components, assayind = 1,
-  picklePath = "./skIdump.pkl", matTx = force, ...)
+skIncrPPCA(
+  se,
+  chunksize,
+  n_components,
+  assayind = 1,
+  picklePath = paste0(tempdir(), "/skIdump.pkl"),
+  matTx = force,
+  ...
+)
 }
 \arguments{
 \item{se}{instance of SummarizedExperiment}
