@@ -4,12 +4,12 @@
 \alias{h5mat}
 \title{create a file connection to HDF5 matrix}
 \usage{
-h5mat(file, dsname = "assay001")
+h5mat(infile, ...)
 }
 \arguments{
-\item{file}{a pathname to an HDF5 file}
+\item{infile}{a pathname to an HDF5 file}
 
-\item{dsname}{internal name of HDF5 matrix to use}
+\item{\dots}{unused}
 }
 \value{
 instance of (S3) h5py._hl.files.File
@@ -17,7 +17,12 @@ instance of (S3) h5py._hl.files.File
 \description{
 create a file connection to HDF5 matrix
 }
+\note{
+The result of this function must be used with basiliskRun with the
+env argument set to BiocSklearn:::bsklenv, or there is a risk of
+inconsistent python modules being invoked.
+}
 \examples{
 fn = system.file("ban_6_17/assays.h5", package="BiocSklearn")
-h5mat(fn)
+h5mat(infile=fn)
 }

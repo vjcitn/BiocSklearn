@@ -1,5 +1,5 @@
-library(testthat)
-library(restfulSE)
+#library(testthat)
+#library(restfulSE)
 
-test_check("BiocSklearn")
+#test_check("BiocSklearn")
 

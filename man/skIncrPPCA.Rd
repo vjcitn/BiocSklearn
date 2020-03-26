@@ -10,7 +10,7 @@ skIncrPPCA(
   chunksize,
   n_components,
   assayind = 1,
-  picklePath = paste0(tempdir(), "/skIdump.pkl"),
+  picklePath = "./skIdump.pkl",
   matTx = force,
   ...
 )

@@ -9,7 +9,7 @@ skPCA(mat, ...)
 \arguments{
 \item{mat}{a matrix -- can be R matrix or numpy.ndarray}
 
-\item{\dots}{additional parameters passed to sklearn.decomposition.PCA, for additional information use \code{py_help(SklearnEls()$sk$PCA)}}
+\item{\dots}{additional parameters passed to sklearn.decomposition.PCA, for additional information use \code{py_help() on a reticulate-imported sklearn.decomposition.PCA instance.}}
 }
 \value{
 matrix with rotation
@@ -21,8 +21,12 @@ use sklearn PCA procedure
 If no additional arguments are passed, all defaults are used.
 }
 \examples{
-irloc = system.file("csv/iris.csv", package="BiocSklearn")
-irismat = SklearnEls()$np$genfromtxt(irloc, delimiter=',')
-skpi = skPCA(irismat)
-getTransformed(skpi)[1:5,]
+#irloc = system.file("csv/iris.csv", package="BiocSklearn")
+#irismat = SklearnEls()$np$genfromtxt(irloc, delimiter=',')
+#skpi = skPCA(irismat)
+#getTransformed(skpi)[1:5,]
+chk = skPCA(data.matrix(iris[,1:4]))
+chk
+head(getTransformed(chk))
+head(prcomp(data.matrix(iris[,1:4]))$x)
 }

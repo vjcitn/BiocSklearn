@@ -21,12 +21,16 @@ obtain an HDF5 dataset reference suitable for handling as numpy matrix
 fn = system.file("ban_6_17/assays.h5", package="BiocSklearn")
 ban = H5matref(fn)
 ban
-np = import("numpy", convert=FALSE) # ensure
-ban$shape
-np$take(ban, 0:3, 0L)
-fullpca = skPCA(ban)
-dim(getTransformed(fullpca))
-ta = np$take
+proc = basilisk::basiliskStart(BiocSklearn:::bsklenv)
+basilisk::basiliskRun(proc, function() {
+ np = import("numpy", convert=FALSE) # ensure
+ print(ban$shape)
+ print(np$take(ban, 0:3, 0L))
+ fullpca = skPCA(ban)
+ dim(getTransformed(fullpca))
+ ta = np$take
+ })
+basilisk::basiliskStop(proc)
 # project samples
 \dontrun{  # on celaya2 this code throws errors, and
 #  I have seen

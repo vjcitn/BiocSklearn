@@ -44,16 +44,16 @@ modules.
 
 ```{r loadup}
 library(BiocSklearn)
-skels = SklearnEls()
-skels
 ```
 
 ## Python documentation
 
 We can acquire python documentation of included modules with
-reticulate's `py_help`:
+reticulate's `py_help`:  The following result could
+get stale:
 ```
-# py_help(skels$skd)
+skd = reticulate::import("sklearn")$decomposition
+py_help(skd)
 Help on package sklearn.decomposition in sklearn:
 
 NAME
@@ -84,7 +84,7 @@ The reticulate package is designed to limit the amount
 of effort required to convert data from R to python
 for natural use in each language.
 
-```{r doimp}
+```{r doimp, eval=FALSE}
 irloc = system.file("csv/iris.csv", package="BiocSklearn")
 irismat = skels$np$genfromtxt(irloc, delimiter=',')
 ```
@@ -93,7 +93,7 @@ To examine a submatrix, we use the take method from numpy.
 The bracket format seen below notifies us that we are not looking at
 data native to R.
 
-```{r dota}
+```{r dota, eval=FALSE}
 skels$np$take(irismat, 0:2, 0L )
 ```
 
@@ -112,7 +112,7 @@ fullpc = prcomp(data.matrix(iris[,1:4]))$x
 We have a python representation of the iris data.  We
 compute the PCA as follows:
 ```{r dopc1}
-ppca = skPCA(irismat)
+ppca = skPCA(data.matrix(iris[,1:4]))
 ppca
 ```
 This returns an object that can be reused through python methods.
@@ -123,7 +123,7 @@ dim(tx)
 head(tx)
 ```
 The native methods can be applied to the `pyobj` output.
-```{r dopy}
+```{r dopy, eval=FALSE}
 pyobj(ppca)$fit_transform(irismat)[1:3,]
 ```
 Concordance with the R computation can be checked:
@@ -136,7 +136,7 @@ round(cor(tx, fullpc),3)
 A computation supporting _a priori_ bounding of memory
 consumption is available.  In this procedure one can
 also select the number of principal components to compute.
-```{r doincr}
+```{r doincr, eval=FALSE}
 ippca = skIncrPCA(irismat) #
 ippcab = skIncrPCA(irismat, batch_size=25L)
 round(cor(getTransformed(ippcab), fullpc),3)
@@ -149,7 +149,7 @@ in chunks, perhaps from a stream.  We iteratively
 update the object, for which there is no container
 at present.  Again the number of components computed
 can be specified.
-```{r dopartial}
+```{r dopartial, eval=FALSE}
 ta = skels$np$take # provide slicer utility
 ipc = skPartialPCA_step(ta(irismat,0:49,0L))
 ipc = skPartialPCA_step(ta(irismat,50:99,0L), obj=ipc)
@@ -183,7 +183,7 @@ ban2 = np$matrix(ban)$T
 ```
 We'll define three chunks of the data and update
 the partial PCA contributions in the object `st`.
-```{r dopart}
+```{r dopart, eval=FALSE}
 st = skPartialPCA_step(ta(ban2, 0:999, 0L))
 st = skPartialPCA_step(ta(ban2, 1000:10999, 0L), obj=st)
 st = skPartialPCA_step(ta(ban2, 11000:44559, 0L), obj=st)
@@ -191,7 +191,7 @@ sss = st$transform(ban2)
 ```
 Verify against the standard PCA, checking correlation
 between the projections to the first four PCs.
-```{r dover}
+```{r dover, eval=FALSE}
 iii = skPCA(ban2)
 dim(getTransformed(iii))
 round(cor(sss[,1:4], getTransformed(iii)[,1:4]),3)

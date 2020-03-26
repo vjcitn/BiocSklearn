@@ -93,8 +93,7 @@ submatGenerator = function(srcfun, rows, cols) {
 #'   round(cor(rpc$x[,1:4], pypc), 3)
 #' }
 #' @exportMethod skIncrPPCA
-setGeneric("skIncrPPCA", function(se, chunksize, n_components, assayind=1, 
-      picklePath=paste0(tempdir(), "/skIdump.pkl"), matTx = force, ...) 
+setGeneric("skIncrPPCA", function(se, chunksize, n_components, assayind=1, picklePath="./skIdump.pkl", matTx = force, ...) 
     standardGeneric("skIncrPPCA"))
 setMethod("skIncrPPCA", "SummarizedExperiment", 
    function(se, chunksize, n_components, assayind=1, ...) {
