@@ -43,12 +43,12 @@ setMethod("pyobj", "SkDecomp", function(x) x@object)
 skPCA = function(mat, ...) {
  proc = basilisk::basiliskStart(bsklenv)
  on.exit(basilisk::basiliskStop(proc))
- ans = basilisk::basiliskRun(proc, function(mat, ...) {
+ basilisk::basiliskRun(proc, function(mat, ...) {
      sk = reticulate::import("sklearn") 
-     op <<- sk$decomposition$PCA(...)
-     op$fit_transform(mat)
+     op <- sk$decomposition$PCA(...)
+     numans = op$fit_transform(mat)
+     new("SkDecomp", method="PCA", transform=numans,
+           object=op)
    }, mat=mat, ...)
- new("SkDecomp", method="PCA", transform=ans,
-    object=op)
 }
 
