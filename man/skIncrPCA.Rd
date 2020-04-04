@@ -4,14 +4,18 @@
 \alias{skIncrPCA}
 \title{use sklearn IncrementalPCA procedure}
 \usage{
-skIncrPCA(mat, n_components, batch_size)
+skIncrPCA(mat, n_components = 2L, batch_size = 5L, ...)
 }
 \arguments{
-\item{mat}{a matrix -- can be R matrix or numpy.ndarray}
+\item{mat}{a matrix -- can be R matrix or numpy.ndarray, if the latter it
+must be set up in a basilisk persistent environment, and that is not
+currently demonstrated for this package.}
 
 \item{n_components}{number of PCA to retrieve}
 
 \item{batch_size}{number of records to use at each iteration}
+
+\item{\dots}{passed to python  IncrementalPCA}
 }
 \value{
 matrix with rotation
@@ -20,10 +24,16 @@ matrix with rotation
 use sklearn IncrementalPCA procedure
 }
 \examples{
+dem = skIncrPCA(iris[,1:4], batch_size=25L)
+\dontrun{
+# this is the unsupported way
 irloc = system.file("csv/iris.csv", package="BiocSklearn")
 irismat = SklearnEls()$np$genfromtxt(irloc, delimiter=',')
 ski = skIncrPCA(irismat)
 ski25 = skIncrPCA(irismat, batch_size=25L) # non-default
 getTransformed(ski)[1:3,]
 getTransformed(ski25)[1:3,]
+} # end dontrun
+dem = skIncrPCA(iris[,1:4], batch_size=25L, n_components=2L)
+dem
 }

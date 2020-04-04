@@ -13,7 +13,7 @@ setClass("SkDecomp", representation(transform="ANY", method="character"))
 
 setMethod("show", "SkDecomp", function(object) {
   cat("SkDecomp instance, method: ", object@method, "\n")
-  cat("retrieve PCs with getTransformed()")
+  cat("use getTransformed() to acquire projected input.\n")
 })
 setGeneric("getTransformed", function(x) standardGeneric("getTransformed"))
 #' @rdname SkDecomp-class
