@@ -27,6 +27,6 @@ skIncrPCA = function(mat, n_components, batch_size) {
      batch_size = as.integer(min(c(nr, 5*nc)))
  skpc = SklearnEls()$skd$IncrementalPCA(n_components=n_components, 
      batch_size=batch_size)
- new("SkDecomp", transform=skpc$fit_transform(mat), object=skpc,
+ new("SkDecomp", transform=skpc$fit_transform(mat), 
        method="IncrementalPCA")
 }

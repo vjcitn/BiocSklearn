@@ -1,16 +1,19 @@
 #' container for sklearn objects and transforms
 #' @slot transform stored as R matrix
 #' @slot method string identifying method
-#' @slot object reference to the python object with decomposition components
 #' @return the getTransformed method returns a matrix
+#' @note In Bioc 3.11, the `object` slot is removed.  This is a consequence
+#' of adoption of basilisk discipline for acquiring and using python resources,
+#' which greatly increases reliability, at the expense of added complication in
+#' handling python objects interactively in R.  We are working on restoring
+#' this functionality but it will take time.
 #' @exportClass SkDecomp
 #' @export getTransformed
-#' @export pyobj
-setClass("SkDecomp", representation(transform="ANY", object="ANY",
-   method="character"))
+setClass("SkDecomp", representation(transform="ANY", method="character"))
+
 setMethod("show", "SkDecomp", function(object) {
   cat("SkDecomp instance, method: ", object@method, "\n")
-  cat("retrieve transformed data with getTransformed(),\n python reference with pyobj(), only for use with basiliskRun()\n")
+  cat("retrieve PCs with getTransformed()")
 })
 setGeneric("getTransformed", function(x) standardGeneric("getTransformed"))
 #' @rdname SkDecomp-class
@@ -18,11 +21,6 @@ setGeneric("getTransformed", function(x) standardGeneric("getTransformed"))
 #' @param x instance of SkDecomp
 #' @exportMethod getTransformed
 setMethod("getTransformed", "SkDecomp", function(x) x@transform)
-setGeneric("pyobj", function(x) standardGeneric("pyobj"))
-#' @rdname SkDecomp-class
-#' @aliases pyobj
-#' @exportMethod pyobj
-setMethod("pyobj", "SkDecomp", function(x) x@object)
 
 #' use sklearn PCA procedure
 #' @importFrom basilisk basiliskStart basiliskStop basiliskRun
@@ -47,8 +45,7 @@ skPCA = function(mat, ...) {
      sk = reticulate::import("sklearn") 
      op <- sk$decomposition$PCA(...)
      numans = op$fit_transform(mat)
-     new("SkDecomp", method="PCA", transform=numans,
-           object=op)
+     new("SkDecomp", method="PCA", transform=numans)  # this may be too heavy -- may deprecate
    }, mat=mat, ...)
 }
 

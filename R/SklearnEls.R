@@ -1,6 +1,7 @@
 #' mediate access to python modules from sklearn.decomposition
 #' @import reticulate
 #' @import knitr
+#' @import Rcpp
 #' @note Returns a list with elements np (numpy), pd (pandas), h5py (h5py),
 #' skd (sklearn.decomposition), joblib (sklearn.externals.joblib), each
 #' referring to python modules.

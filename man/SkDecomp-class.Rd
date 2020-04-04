@@ -5,13 +5,9 @@
 \alias{SkDecomp-class}
 \alias{getTransformed,SkDecomp-method}
 \alias{getTransformed}
-\alias{pyobj,SkDecomp-method}
-\alias{pyobj}
 \title{container for sklearn objects and transforms}
 \usage{
 \S4method{getTransformed}{SkDecomp}(x)
-
-\S4method{pyobj}{SkDecomp}(x)
 }
 \arguments{
 \item{x}{instance of SkDecomp}
@@ -28,7 +24,12 @@ container for sklearn objects and transforms
 \item{\code{transform}}{stored as R matrix}
 
 \item{\code{method}}{string identifying method}
-
-\item{\code{object}}{reference to the python object with decomposition components}
 }}
 
+\note{
+In Bioc 3.11, the `object` slot is removed.  This is a consequence
+of adoption of basilisk discipline for acquiring and using python resources,
+which greatly increases reliability, at the expense of added complication in
+handling python objects interactively in R.  We are working on restoring
+this functionality but it will take time.
+}
