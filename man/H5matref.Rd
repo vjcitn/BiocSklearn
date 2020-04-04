@@ -17,11 +17,16 @@ instance of (S3) "h5py._hl.dataset.Dataset"
 \description{
 obtain an HDF5 dataset reference suitable for handling as numpy matrix
 }
+\note{
+This should only be used with persistent environment discipline of basilisk.
+Additional support is planned in Bioc 3.12.
+}
 \examples{
+\dontrun{
 fn = system.file("ban_6_17/assays.h5", package="BiocSklearn")
 ban = H5matref(fn)
 ban
-proc = basilisk::basiliskStart(BiocSklearn:::bsklenv)
+proc = basilisk::basiliskStart(bsklenv)
 basilisk::basiliskRun(proc, function() {
  np = import("numpy", convert=FALSE) # ensure
  print(ban$shape)
@@ -31,6 +36,7 @@ basilisk::basiliskRun(proc, function() {
  ta = np$take
  })
 basilisk::basiliskStop(proc)
+}
 # project samples
 \dontrun{  # on celaya2 this code throws errors, and
 #  I have seen

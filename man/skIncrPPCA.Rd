@@ -37,9 +37,9 @@ python instance of \code{sklearn.decomposition.incremental_pca.IncrementalPCA}
 optionally fault tolerant incremental partial PCA for projection of samples from SummarizedExperiment
 }
 \note{
-Will treat samples as records and all features (rows) 
-as attributes, projecting.  
-to an \code{n_components}-dimensional space.  Method will 
+Will treat samples as records and all features (rows)
+as attributes, projecting.
+to an \code{n_components}-dimensional space.  Method will
 acquire chunk of assay data
 and transpose before computing PCA contributions.
 In case of crash, restore from \code{picklePath} using

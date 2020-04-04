@@ -27,7 +27,7 @@ container for sklearn objects and transforms
 }}
 
 \note{
-In Bioc 3.11, the `object` slot is removed.  This is a consequence
+In Bioc 3.11, the \code{object} slot is removed.  This is a consequence
 of adoption of basilisk discipline for acquiring and using python resources,
 which greatly increases reliability, at the expense of added complication in
 handling python objects interactively in R.  We are working on restoring

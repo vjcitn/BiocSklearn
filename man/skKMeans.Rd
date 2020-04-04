@@ -2,7 +2,7 @@
 % Please edit documentation in R/skClust.R
 \name{skKMeans}
 \alias{skKMeans}
-\title{interface to sklearn.cluster.KMeans with attention to direct work with HDF5}
+\title{interface to sklearn.cluster.KMeans using basilisk discipline}
 \usage{
 skKMeans(mat, ...)
 }
@@ -11,14 +11,37 @@ skKMeans(mat, ...)
 
 \item{\dots}{arguments to sklearn.cluster.KMeans}
 }
+\value{
+a list with cluster assignments (integers starting with zero) and
+asserted cluster centers.
+}
 \description{
-interface to sklearn.cluster.KMeans with attention to direct work with HDF5
+interface to sklearn.cluster.KMeans using basilisk discipline
 }
 \note{
-You can use `py_help(SklearnEls()$skcl$KMeans)` to
+You can use \code{py_help(SklearnEls()$skcl$KMeans)} to
 get python documentation on parameters and return structure.
+This is a demonstrative interface to the resources of sklearn.cluster.
+In this particular interface, we are using sklearn.cluster.k_means_.KMeans.
+There are many other possibilities in sklearn.cluster: _dbscan_inner,
+\emph{feature_agglomeration,
+\emph{hierarchical,
+\emph{k_means,
+\emph{k_means_elkan,
+affinity_propagation},
+bicluster,
+birch,
+dbscan},
+hierarchical,
+k_means},
+mean_shift},
+setup,
+spectral.
 }
 \examples{
+\dontrun{
+# This blocked example shows a risky approach evading basilisk discipline and is
+# to be used at your own risk.
 # start with numpy array reference as data
 irloc = system.file("csv/iris.csv", package="BiocSklearn")
 skels = SklearnEls()
@@ -35,4 +58,12 @@ table(ans$labels_, ans2$labels_)
 ans3 = skKMeans(skels$np$array(ds)$T, 
    n_clusters=8L, max_iter=200L, 
    algorithm="full", random_state=20L)
+}
+dem = skKMeans(iris[,1:4], n_clusters=3L, max_iter=100L, algorithm="full",
+   random_state=20L)
+str(dem)
+tab = table(iris$Species, dem$labels)
+tab
+plot(iris[,1], iris[,3], col=as.numeric(factor(iris$Species)))
+points(dem$centers[,1], dem$centers[,3], pch=19, col=apply(tab,2,which.max))
 }

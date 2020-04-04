@@ -19,10 +19,13 @@ create a file connection to HDF5 matrix
 }
 \note{
 The result of this function must be used with basiliskRun with the
-env argument set to BiocSklearn:::bsklenv, or there is a risk of
-inconsistent python modules being invoked.
+env argument set to bsklenv, or there is a risk of
+inconsistent python modules being invoked.  This should only be used
+with the persistent environment discipline of basilisk.
 }
 \examples{
+\dontrun{
 fn = system.file("ban_6_17/assays.h5", package="BiocSklearn")
 h5mat(infile=fn)
+}
 }
