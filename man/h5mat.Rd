@@ -29,18 +29,18 @@ with the persistent environment discipline of basilisk.
 if (interactive()) {   # not clear why
 fn = system.file("ban_6_17/assays.h5", package="BiocSklearn")
 proc = basilisk::basiliskStart(BiocSklearn:::bsklenv)
-hh = basilisk::basiliskRun(proc, function(infile, mode="r") {
-     h5py = reticulate::import("h5py") 
-     h5py$File( infile, mode=mode )
-     }, infile=fn, mode="r")
-cat("File reference:\n ")
-print(hh)
-cat("File attributes in python:\n ")
-print(head(names(hh)))
-cat("File keys in python:\n ")
-print(hh$keys())
-cat("HDF5 dataset in python:\n ")
-print(hh['assay001'])
+basilisk::basiliskRun(proc, function(infile, mode="r") {
+ h5py = reticulate::import("h5py") 
+ hh = h5py$File( infile, mode=mode )
+ cat("File reference:\n ")
+ print(hh)
+ cat("File attributes in python:\n ")
+ print(head(names(hh)))
+ cat("File keys in python:\n ")
+ print(hh$keys())
+ cat("HDF5 dataset in python:\n ")
+ print(hh['assay001'])
+}, infile=fn, mode="r")
 basilisk::basiliskStop(proc)
 }
 }
