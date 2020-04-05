@@ -4,10 +4,12 @@
 \alias{h5mat}
 \title{create a file connection to HDF5 matrix}
 \usage{
-h5mat(infile, ...)
+h5mat(infile, mode = "r", ...)
 }
 \arguments{
 \item{infile}{a pathname to an HDF5 file}
+
+\item{mode}{character(1) defaults to "r", see py_help for h5py.File}
 
 \item{\dots}{unused}
 }
@@ -24,8 +26,21 @@ inconsistent python modules being invoked.  This should only be used
 with the persistent environment discipline of basilisk.
 }
 \examples{
-\dontrun{
+if (interactive()) {   # not clear why
 fn = system.file("ban_6_17/assays.h5", package="BiocSklearn")
-h5mat(infile=fn)
+proc = basilisk::basiliskStart(BiocSklearn:::bsklenv)
+hh = basilisk::basiliskRun(proc, function(infile, mode="r") {
+     h5py = reticulate::import("h5py") 
+     h5py$File( infile, mode=mode )
+     }, infile=fn, mode="r")
+cat("File reference:\n ")
+print(hh)
+cat("File attributes in python:\n ")
+print(head(names(hh)))
+cat("File keys in python:\n ")
+print(hh$keys())
+cat("HDF5 dataset in python:\n ")
+print(hh['assay001'])
+basilisk::basiliskStop(proc)
 }
 }

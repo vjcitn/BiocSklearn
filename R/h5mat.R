@@ -1,5 +1,6 @@
 #' create a file connection to HDF5 matrix
 #' @param infile a pathname to an HDF5 file
+#' @param mode character(1) defaults to "r", see py_help for h5py.File
 #' @param \dots unused
 #' @note The result of this function must be used with basiliskRun with the
 #' env argument set to bsklenv, or there is a risk of
@@ -7,18 +8,31 @@
 #' with the persistent environment discipline of basilisk.
 #' @return instance of (S3) h5py._hl.files.File
 #' @examples
-#' \dontrun{
+#' if (interactive()) {   # not clear why
 #' fn = system.file("ban_6_17/assays.h5", package="BiocSklearn")
-#' h5mat(infile=fn)
+#' proc = basilisk::basiliskStart(BiocSklearn:::bsklenv)
+#' hh = basilisk::basiliskRun(proc, function(infile, mode="r") {
+#'      h5py = reticulate::import("h5py") 
+#'      h5py$File( infile, mode=mode )
+#'      }, infile=fn, mode="r")
+#' cat("File reference:\n ")
+#' print(hh)
+#' cat("File attributes in python:\n ")
+#' print(head(names(hh)))
+#' cat("File keys in python:\n ")
+#' print(hh$keys())
+#' cat("HDF5 dataset in python:\n ")
+#' print(hh['assay001'])
+#' basilisk::basiliskStop(proc)
 #' }
 #' @export
-h5mat = function( infile, ... ) {
+h5mat = function( infile, mode="r", ... ) {
  proc = basilisk::basiliskStart(bsklenv)
  on.exit(basilisk::basiliskStop(proc))
  basilisk::basiliskRun(proc, function(infile, ...) {
      h5py = reticulate::import("h5py") 
-     h5py$File( infile )
-     }, infile=infile, ...)
+     h5py$File( infile, mode=mode )
+     }, infile=infile, mode=mode, ...)
 }
 
 #' obtain an HDF5 dataset reference suitable for handling as numpy matrix 

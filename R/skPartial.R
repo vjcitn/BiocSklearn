@@ -65,7 +65,6 @@ submatGenerator = function(srcfun, rows, cols) {
 #' @param picklePath if non-null, incremental results saved here via sklearn.externals.joblib.dump, for each chunk.  If NULL, no saving of incremental results.
 #' @param matTx a function defaulting to force() that accepts a matrix and returns a matrix with identical dimensions, e.g., \code{function(x) log(x+1)}
 #' @param \dots not used
-#' @importFrom BBmisc chunk
 #' @import SummarizedExperiment
 #' @return python instance of \code{sklearn.decomposition.incremental_pca.IncrementalPCA}
 #' @aliases skIncrPPCA,SummarizedExperiment-method
@@ -102,7 +101,7 @@ setMethod("skIncrPPCA", "SummarizedExperiment",
    chunksize = as.integer(chunksize)
    rowvec = seq_len(nrow(se))
    colvec = seq_len(ncol(se))
-   chs = chunk(colvec, chunk.size=chunksize)
+   chs = biosk_chunk(colvec, chunk.size=chunksize)
    matgen = function(rows, cols) t(matTx(as.matrix(assay(se[rows, cols])))) # assayind handling?
    cur = skPartialPCA_step(
       submatGenerator( matgen, rowvec, chs[[1]] ), n_components )
