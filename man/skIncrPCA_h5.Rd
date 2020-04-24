@@ -23,8 +23,10 @@ Here we use IncrementalPCA$fit_transform and let python take care of chunk retri
 \code{skIncrPartialPCA} acquires chunks from R matrix and uses IncrementalPCA$partial_fit.
 }
 \examples{
-fn = system.file("hdf5/irmatt.h5", package="BiocSklearn") # 'transposed' relative to R iris
-dem = skIncrPCA_h5(fn, n_components=3L, dsname="tquants")
-dem
-head(getTransformed(dem))
+if (interactive()) {
+ fn = system.file("hdf5/irmatt.h5", package="BiocSklearn") # 'transposed' relative to R iris
+ dem = skIncrPCA_h5(fn, n_components=3L, dsname="tquants")
+ dem
+ head(getTransformed(dem))
+}
 }
