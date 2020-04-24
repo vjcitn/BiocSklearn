@@ -21,7 +21,7 @@
 #' dem
 #' @export
 skIncrPCA = function(mat, n_components=2L, batch_size=5L, ...) {
- proc = basilisk::basiliskStart(bsklenv)
+ proc = basilisk::basiliskStart(NULL)
  on.exit(basilisk::basiliskStop(proc))
  basilisk::basiliskRun(proc, function(mat, n_components, batch_size, ...) {
    if (is(mat, "matrix")) {

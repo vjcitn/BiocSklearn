@@ -166,19 +166,22 @@ from chr6 and chr17 are available in an HDF5 matrix
 in this BiocSklearn package.  A reference to the
 dataset through the h5py File interface is created by
 `H5matref`.
-```{r lkmref}
+
+THIS CODE IS NOT BASILISK COMPLIANT AND IS BLOCKED.
+See skPartialPCA_h5 for valid interface.
+```{r lkmref,eval=FALSE}
 fn = system.file("ban_6_17/assays.h5", package="BiocSklearn")
 ban = H5matref(fn)
 ban 
 ```
 We will explicitly define the numpy matrix.
-```{r getmmm}
+```{r getmmm,eval=FALSE}
 np = import("numpy", convert=FALSE) # ensure
 ban$shape
 ```
 We'll treat genes as records and individuals
 as features.
-```{r dotx}
+```{r dotx,eval=FALSE}
 ban2 = np$matrix(ban)$T
 ```
 We'll define three chunks of the data and update

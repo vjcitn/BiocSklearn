@@ -19,14 +19,14 @@ biosk_chunk = function (x, chunk.size, n.chunks)
 #' @param mat a matrix
 #' @param n_components integer(1) number of PCs to compute
 #' @param chunk.size integer(1) number of rows to use each step
-#' @note A good source for capabilities and examples is at the [sklearn doc site](https://scikit-learn.org/stable/modules/decomposition.html#decompositions).
+#' @note A good source for capabilities and examples is at the [sklearn doc site](https://scikit-learn.org/stable/modules/decomposition.html\#decompositions).
 #' @examples
 #' lk = skIncrPartialPCA(iris[,1:4], n_components=3L)
 #' lk
 #' head(getTransformed(lk))
 #' @export
 skIncrPartialPCA = function(mat, n_components, chunk.size=10) {
- proc = basilisk::basiliskStart(bsklenv)
+ proc = basilisk::basiliskStart(NULL)
  on.exit(basilisk::basiliskStop(proc))
  basilisk::basiliskRun(proc, function(mat, n_components, chunk.size) {
      sk = reticulate::import("sklearn") # is another level needed -- decomposition._incremental_pca? Apr 2020
@@ -53,17 +53,16 @@ skIncrPartialPCA = function(mat, n_components, chunk.size=10) {
 #' head(getTransformed(dem))
 #' @export
 skIncrPCA_h5 = function(fn, dsname="assay001", n_components, chunk.size=10L) {
- proc = basilisk::basiliskStart(bsklenv)
+ proc = basilisk::basiliskStart(bsklenv)  # need for HDF5 infrastructure
  on.exit(basilisk::basiliskStop(proc))
- useh5 = function(fn, dsname, n_components, chunk.size) {
+ basilisk::basiliskRun(proc, function(fn, dsname, n_components, chunk.size) {
      sk = reticulate::import("sklearn") # is another level needed -- decomposition._incremental_pca? Apr 2020
      h5 = reticulate::import("h5py") # 
      matref = h5$File(fn, mode="r")
      op <- sk$decomposition$IncrementalPCA(n_components=as.integer(n_components), 
          batch_size=as.integer(chunk.size))  # coercions crucial here, unrelated errors arise if not present
      op$fit_transform(matref[dsname])
-     new("SkDecomp", method="IncrPartialPCA", transform=op$transform(matref[dsname]))  # this may be too heavy -- may deprecate
-   }
- basilisk::basiliskRun(proc, useh5, 
+     SkDecomp(method="IncrPartialPCA", transform=op$transform(matref[dsname]))  # this may be too heavy -- may deprecate
+   },
     fn=fn, dsname=dsname, n_components=n_components, chunk.size=chunk.size)
 }

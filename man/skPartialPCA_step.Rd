@@ -23,6 +23,8 @@ take a step in sklearn IncrementalPCA partial fit procedure
 if obj is missing, the process is initialized with the matrix provided
 }
 \examples{
+\dontrun{
+# these steps are not basilisk-compliant, you need to acquire references 
 irloc = system.file("csv/iris.csv", package="BiocSklearn")
 irismat = SklearnEls()$np$genfromtxt(irloc, delimiter=',')
 ta = SklearnEls()$np$take
@@ -34,4 +36,5 @@ ipc$transform(ta(irismat,0:5,0L))
 fullproj = ipc$transform(irismat)
 fullpc = prcomp(data.matrix(iris[,1:4]))$x
 round(cor(fullpc,fullproj),3)
+}
 }

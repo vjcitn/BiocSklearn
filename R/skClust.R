@@ -51,7 +51,7 @@
 #' points(dem$centers[,1], dem$centers[,3], pch=19, col=apply(tab,2,which.max))
 #' @export
 skKMeans = function(mat, ...) {
- proc = basilisk::basiliskStart(bsklenv)
+ proc = basilisk::basiliskStart(NULL)
  on.exit(basilisk::basiliskStop(proc))
  basilisk::basiliskRun(proc, function(mat, ...) {
    skcl = reticulate::import("sklearn.cluster")

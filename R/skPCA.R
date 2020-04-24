@@ -11,6 +11,14 @@
 #' @export getTransformed
 setClass("SkDecomp", representation(transform="ANY", method="character"))
 
+#' constructor for SkDecomp
+#' @param transform typically a numerical matrix representing a projection of the input
+#' @param method character(1) arbitrary tag describing the decomposition
+#' @export
+SkDecomp = function(transform, method) {
+  new("SkDecomp", transform=transform, method=method)
+}
+
 setMethod("show", "SkDecomp", function(object) {
   cat("SkDecomp instance, method: ", object@method, "\n")
   cat("use getTransformed() to acquire projected input.\n")
@@ -39,13 +47,13 @@ setMethod("getTransformed", "SkDecomp", function(x) x@transform)
 #' head(prcomp(data.matrix(iris[,1:4]))$x)
 #' @export
 skPCA = function(mat, ...) {
- proc = basilisk::basiliskStart(bsklenv)
+ proc = basilisk::basiliskStart(NULL) # avoid package-specific import
  on.exit(basilisk::basiliskStop(proc))
  basilisk::basiliskRun(proc, function(mat, ...) {
      sk = reticulate::import("sklearn") 
      op <- sk$decomposition$PCA(...)
      numans = op$fit_transform(mat)
-     new("SkDecomp", method="PCA", transform=numans)  # this may be too heavy -- may deprecate
+     BiocSklearn::SkDecomp(transform=numans, method="PCA") # new("SkDecomp", method="PCA", transform=numans)  # this may be too heavy -- may deprecate
    }, mat=mat, ...)
 }
 

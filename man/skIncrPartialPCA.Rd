@@ -17,7 +17,7 @@ skIncrPartialPCA(mat, n_components, chunk.size = 10)
 use basilisk discipline to perform partial (n_components) incremental (chunk.size) PCA with scikit.decomposition
 }
 \note{
-A good source for capabilities and examples is at the \href{https://scikit-learn.org/stable/modules/decomposition.html#decompositions}{sklearn doc site}.
+A good source for capabilities and examples is at the \href{https://scikit-learn.org/stable/modules/decomposition.html\#decompositions}{sklearn doc site}.
 }
 \examples{
 lk = skIncrPartialPCA(iris[,1:4], n_components=3L)

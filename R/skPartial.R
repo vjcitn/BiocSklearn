@@ -7,6 +7,8 @@
 #' @note if obj is missing, the process is initialized with the matrix provided
 #' @return trained IncrementalPCA reference, to which 'transform' method can be applied to obtain projection for any compliant input
 #' @examples
+#' \dontrun{
+#' # these steps are not basilisk-compliant, you need to acquire references 
 #' irloc = system.file("csv/iris.csv", package="BiocSklearn")
 #' irismat = SklearnEls()$np$genfromtxt(irloc, delimiter=',')
 #' ta = SklearnEls()$np$take
@@ -18,6 +20,7 @@
 #' fullproj = ipc$transform(irismat)
 #' fullpc = prcomp(data.matrix(iris[,1:4]))$x
 #' round(cor(fullpc,fullproj),3)
+#' }
 #' @export
 skPartialPCA_step = function(mat, n_components, obj) {
  if (is(mat, "matrix")) {
