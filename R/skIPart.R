@@ -35,7 +35,7 @@ skIncrPartialPCA = function(mat, n_components, chunk.size=10) {
      for (i in 1:length(chinds)) {
         op$partial_fit(mat[chinds[[i]],])
         }
-     new("SkDecomp", method="IncrPartialPCA", transform=op$transform(mat))  # this may be too heavy -- may deprecate
+     BiocSklearn::SkDecomp(method="IncrPartialPCA", transform=op$transform(mat))  # this may be too heavy -- may deprecate
    }, mat=mat, n_components, chunk.size=10)
 }
 
@@ -47,10 +47,12 @@ skIncrPartialPCA = function(mat, n_components, chunk.size=10) {
 #' @note Here we use IncrementalPCA$fit_transform and let python take care of chunk retrieval.
 #' `skIncrPartialPCA` acquires chunks from R matrix and uses IncrementalPCA$partial_fit.
 #' @examples
-#' fn = system.file("hdf5/irmatt.h5", package="BiocSklearn") # 'transposed' relative to R iris
-#' dem = skIncrPCA_h5(fn, n_components=3L, dsname="tquants")
-#' dem
-#' head(getTransformed(dem))
+#' if (interactive()) {
+#'  fn = system.file("hdf5/irmatt.h5", package="BiocSklearn") # 'transposed' relative to R iris
+#'  dem = skIncrPCA_h5(fn, n_components=3L, dsname="tquants")
+#'  dem
+#'  head(getTransformed(dem))
+#' }
 #' @export
 skIncrPCA_h5 = function(fn, dsname="assay001", n_components, chunk.size=10L) {
  proc = basilisk::basiliskStart(bsklenv)  # need for HDF5 infrastructure
@@ -62,7 +64,7 @@ skIncrPCA_h5 = function(fn, dsname="assay001", n_components, chunk.size=10L) {
      op <- sk$decomposition$IncrementalPCA(n_components=as.integer(n_components), 
          batch_size=as.integer(chunk.size))  # coercions crucial here, unrelated errors arise if not present
      op$fit_transform(matref[dsname])
-     SkDecomp(method="IncrPartialPCA", transform=op$transform(matref[dsname]))  # this may be too heavy -- may deprecate
+     BiocSklearn::SkDecomp(method="IncrPartialPCA", transform=op$transform(matref[dsname]))  # this may be too heavy -- may deprecate
    },
     fn=fn, dsname=dsname, n_components=n_components, chunk.size=chunk.size)
 }
