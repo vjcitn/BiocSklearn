@@ -2,7 +2,6 @@
 
 export(H5matref)
 export(SkDecomp)
-export(SklearnEls)
 export(getTransformed)
 export(h5mat)
 export(skIncrPCA)

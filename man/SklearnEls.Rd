@@ -13,12 +13,15 @@ list of (S3) "python.builtin.module"
 mediate access to python modules from sklearn.decomposition
 }
 \note{
-Returns a list with elements np (numpy), pd (pandas), h5py (h5py),
+Deprecated.  Previously returned a list with elements np (numpy), pd (pandas), h5py (h5py),
 skd (sklearn.decomposition), joblib (sklearn.externals.joblib), each
-referring to python modules.
+referring to python modules.  This was done directly with reticulate, but basilisk package
+discipline is more reliable.
 }
 \examples{
+\dontrun{
 els = SklearnEls()
 names(els$skd) # slow at first
 # try py_help(els$skd$PCA) # etc.
+}
 }
