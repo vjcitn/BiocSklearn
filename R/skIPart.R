@@ -26,7 +26,7 @@ biosk_chunk = function (x, chunk.size, n.chunks)
 #' head(getTransformed(lk))
 #' @export
 skIncrPartialPCA = function(mat, n_components, chunk.size=10) {
- proc = basilisk::basiliskStart(NULL)
+ proc = basilisk::basiliskStart(bsklenv)
  on.exit(basilisk::basiliskStop(proc))
  basilisk::basiliskRun(proc, function(mat, n_components, chunk.size) {
      sk = reticulate::import("sklearn") # is another level needed -- decomposition._incremental_pca? Apr 2020
