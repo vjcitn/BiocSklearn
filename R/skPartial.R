@@ -82,6 +82,7 @@ submatGenerator = function(srcfun, rows, cols) {
 #' python reference to determine where to restart.
 #' You can manage resumption using \code{skPartialPCA_step}.
 #' @examples
+#' \dontrun{
 #' # demo SE made with TENxGenomics:
 #' # mm = matrixSummarizedExperiment(h5path, 1:27998, 1:750)
 #' # saveHDF5SummarizedExperiment(mm, "tenx_750")
@@ -94,6 +95,7 @@ submatGenerator = function(srcfun, rows, cols) {
 #'   rpc = prcomp(dat)
 #'   round(cor(rpc$x[,1:4], pypc), 3)
 #' }
+#' } # this has to be made basilisk-compliant
 #' @exportMethod skIncrPPCA
 setGeneric("skIncrPPCA", function(se, chunksize, n_components, assayind=1, picklePath="./skIdump.pkl", matTx = force, ...) 
     standardGeneric("skIncrPPCA"))

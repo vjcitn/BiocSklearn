@@ -49,6 +49,7 @@ python reference to determine where to restart.
 You can manage resumption using \code{skPartialPCA_step}.
 }
 \examples{
+\dontrun{
 # demo SE made with TENxGenomics:
 # mm = matrixSummarizedExperiment(h5path, 1:27998, 1:750)
 # saveHDF5SummarizedExperiment(mm, "tenx_750")
@@ -61,4 +62,5 @@ if (requireNamespace("HDF5Array")) {
   rpc = prcomp(dat)
   round(cor(rpc$x[,1:4], pypc), 3)
 }
+} # this has to be made basilisk-compliant
 }
