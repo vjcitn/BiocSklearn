@@ -46,7 +46,7 @@ h5mat = function( infile, mode="r", ... ) {
 #' fn = system.file("ban_6_17/assays.h5", package="BiocSklearn")
 #' ban = H5matref(fn)
 #' ban
-#' proc = basilisk::basiliskStart(bsklenv)
+#' proc = basilisk::basiliskStart(BiocSklearn:::bsklenv)
 #' basilisk::basiliskRun(proc, function() {
 #'  np = import("numpy", convert=FALSE) # ensure
 #'  print(ban$shape)
