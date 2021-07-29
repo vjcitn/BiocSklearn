@@ -5,7 +5,7 @@ Version: 1.15.0
 Authors@R: 
     c(person("Vince", "Carey", email="stvjc@channing.harvard.edu",
     role=c("cre", "aut")))
-Suggests: testthat, restfulSE, HDF5Array, BiocStyle
+Suggests: testthat, restfulSE, HDF5Array, BiocStyle, rmarkdown
 Depends: R (>= 4.0), reticulate, methods, SummarizedExperiment, knitr
 Imports: basilisk, Rcpp
 License: Artistic-2.0
