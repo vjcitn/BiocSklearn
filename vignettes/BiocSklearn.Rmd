@@ -135,8 +135,8 @@ A computation supporting _a priori_ bounding of memory
 consumption is available.  In this procedure one can
 also select the number of principal components to compute.
 ```{r doincr, eval=TRUE}
-ippca = skIncrPCA(irismat) #
-ippcab = skIncrPCA(irismat, batch_size=25L)
+ippca = skIncrPCA(iris[,1:4]) #mat) #
+ippcab = skIncrPCA(iris[,1:4], batch_size=25L)
 round(cor(getTransformed(ippcab), fullpc),3)
 ```
 
@@ -166,37 +166,8 @@ dataset through the h5py File interface is created by
 `H5matref`.
 
 
-See skPartialPCA_h5 for basilisk interface.
-```{r lkmref,eval=TRUE}
-fn = system.file("ban_6_17/assays.h5", package="BiocSklearn")
-ban = H5matref(fn)
-ban 
-```
-We will explicitly define the numpy matrix.
-```{r getmmm,eval=TRUE}
-np = import("numpy", convert=FALSE) # ensure
-ban$shape
-```
-We'll treat genes as records and individuals
-as features.
-```{r dotx,eval=TRUE}
-ban2 = np$matrix(ban)$T
-```
-We'll define three chunks of the data and update
-the partial PCA contributions in the object `st`.
-```{r dopart, eval=TRUE}
-st = skPartialPCA_step(ta(ban2, 0:999, 0L))
-st = skPartialPCA_step(ta(ban2, 1000:10999, 0L), obj=st)
-st = skPartialPCA_step(ta(ban2, 11000:44559, 0L), obj=st)
-sss = st$transform(ban2)
-```
-Verify against the standard PCA, checking correlation
-between the projections to the first four PCs.
-```{r dover, eval=TRUE}
-iii = skPCA(ban2)
-dim(getTransformed(iii))
-round(cor(sss[,1:4], getTransformed(iii)[,1:4]),3)
-```
+See skPartialPCA_h5 for basilisk interface, and `example(H5matref)`
+for working directly with HDF5.
 
 # Conclusions
 
