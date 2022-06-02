@@ -84,17 +84,18 @@ The reticulate package is designed to limit the amount
 of effort required to convert data from R to python
 for natural use in each language.
 
-```{r doimp, eval=FALSE}
+```{r doimp, eval=TRUE}
+np = reticulate::import("numpy", convert=FALSE, delay_load=TRUE)
 irloc = system.file("csv/iris.csv", package="BiocSklearn")
-irismat = skels$np$genfromtxt(irloc, delimiter=',')
+irismat = np$genfromtxt(irloc, delimiter=',')
 ```
 
 To examine a submatrix, we use the take method from numpy.
 The bracket format seen below notifies us that we are not looking at
 data native to R.
 
-```{r dota, eval=FALSE}
-skels$np$take(irismat, 0:2, 0L )
+```{r dota, eval=TRUE}
+np$take(irismat, 0:2, 0L )
 ```
 
 # Dimension reduction with sklearn: illustration with iris dataset
@@ -122,10 +123,7 @@ tx = getTransformed(ppca)
 dim(tx)
 head(tx)
 ```
-The native methods can be applied to the `pyobj` output.
-```{r dopy, eval=FALSE}
-pyobj(ppca)$fit_transform(irismat)[1:3,]
-```
+
 Concordance with the R computation can be checked:
 ```{r lkconc}
 round(cor(tx, fullpc),3)
@@ -136,7 +134,7 @@ round(cor(tx, fullpc),3)
 A computation supporting _a priori_ bounding of memory
 consumption is available.  In this procedure one can
 also select the number of principal components to compute.
-```{r doincr, eval=FALSE}
+```{r doincr, eval=TRUE}
 ippca = skIncrPCA(irismat) #
 ippcab = skIncrPCA(irismat, batch_size=25L)
 round(cor(getTransformed(ippcab), fullpc),3)
@@ -149,8 +147,8 @@ in chunks, perhaps from a stream.  We iteratively
 update the object, for which there is no container
 at present.  Again the number of components computed
 can be specified.
-```{r dopartial, eval=FALSE}
-ta = skels$np$take # provide slicer utility
+```{r dopartial, eval=TRUE}
+ta = np$take # provide slicer utility
 ipc = skPartialPCA_step(ta(irismat,0:49,0L))
 ipc = skPartialPCA_step(ta(irismat,50:99,0L), obj=ipc)
 ipc = skPartialPCA_step(ta(irismat,100:149,0L), obj=ipc)
@@ -167,26 +165,26 @@ in this BiocSklearn package.  A reference to the
 dataset through the h5py File interface is created by
 `H5matref`.
 
-THIS CODE IS NOT BASILISK COMPLIANT AND IS BLOCKED.
-See skPartialPCA_h5 for valid interface.
-```{r lkmref,eval=FALSE}
+
+See skPartialPCA_h5 for basilisk interface.
+```{r lkmref,eval=TRUE}
 fn = system.file("ban_6_17/assays.h5", package="BiocSklearn")
 ban = H5matref(fn)
 ban 
 ```
 We will explicitly define the numpy matrix.
-```{r getmmm,eval=FALSE}
+```{r getmmm,eval=TRUE}
 np = import("numpy", convert=FALSE) # ensure
 ban$shape
 ```
 We'll treat genes as records and individuals
 as features.
-```{r dotx,eval=FALSE}
+```{r dotx,eval=TRUE}
 ban2 = np$matrix(ban)$T
 ```
 We'll define three chunks of the data and update
 the partial PCA contributions in the object `st`.
-```{r dopart, eval=FALSE}
+```{r dopart, eval=TRUE}
 st = skPartialPCA_step(ta(ban2, 0:999, 0L))
 st = skPartialPCA_step(ta(ban2, 1000:10999, 0L), obj=st)
 st = skPartialPCA_step(ta(ban2, 11000:44559, 0L), obj=st)
@@ -194,7 +192,7 @@ sss = st$transform(ban2)
 ```
 Verify against the standard PCA, checking correlation
 between the projections to the first four PCs.
-```{r dover, eval=FALSE}
+```{r dover, eval=TRUE}
 iii = skPCA(ban2)
 dim(getTransformed(iii))
 round(cor(sss[,1:4], getTransformed(iii)[,1:4]),3)
