@@ -24,7 +24,7 @@ skIncrPPCA(
 
 \item{assayind}{not used, assumed set to 1}
 
-\item{picklePath}{if non-null, incremental results saved here via sklearn.externals.joblib.dump, for each chunk.  If NULL, no saving of incremental results.}
+\item{picklePath}{if non-null, incremental results saved here via joblib.dump, for each chunk.  If NULL, no saving of incremental results.}
 
 \item{matTx}{a function defaulting to force() that accepts a matrix and returns a matrix with identical dimensions, e.g., \code{function(x) log(x+1)}}
 
@@ -43,13 +43,12 @@ to an \code{n_components}-dimensional space.  Method will
 acquire chunk of assay data
 and transpose before computing PCA contributions.
 In case of crash, restore from \code{picklePath} using
-\code{SklearnEls()$joblib$load} after loading reticulate.  You can
+\code{joblib$load} after loading reticulate.  You can
 use the \code{n_samples_seen_} component of the restored
 python reference to determine where to restart.
 You can manage resumption using \code{skPartialPCA_step}.
 }
 \examples{
-\dontrun{
 # demo SE made with TENxGenomics:
 # mm = matrixSummarizedExperiment(h5path, 1:27998, 1:750)
 # saveHDF5SummarizedExperiment(mm, "tenx_750")
@@ -61,6 +60,5 @@ if (requireNamespace("HDF5Array")) {
   round(cor(pypc <- lit$transform(dat <- t(as.matrix(assay(se750[,1:50]))))),3)
   rpc = prcomp(dat)
   round(cor(rpc$x[,1:4], pypc), 3)
-}
 } # this has to be made basilisk-compliant
 }

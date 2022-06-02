@@ -7,11 +7,11 @@
 #' @note if obj is missing, the process is initialized with the matrix provided
 #' @return trained IncrementalPCA reference, to which 'transform' method can be applied to obtain projection for any compliant input
 #' @examples
-#' \dontrun{
 #' # these steps are not basilisk-compliant, you need to acquire references 
 #' irloc = system.file("csv/iris.csv", package="BiocSklearn")
-#' irismat = SklearnEls()$np$genfromtxt(irloc, delimiter=',')
-#' ta = SklearnEls()$np$take
+#' np = reticulate::import("numpy", delay_load=TRUE, convert=FALSE)
+#' irismat = np$genfromtxt(irloc, delimiter=',')
+#' ta = np$take
 #' ipc = skPartialPCA_step(ta(irismat,0:49,0L))
 #' ipc = skPartialPCA_step(ta(irismat,50:99,0L), obj=ipc)
 #' ipc = skPartialPCA_step(ta(irismat,100:149,0L), obj=ipc)
@@ -20,7 +20,6 @@
 #' fullproj = ipc$transform(irismat)
 #' fullpc = prcomp(data.matrix(iris[,1:4]))$x
 #' round(cor(fullpc,fullproj),3)
-#' }
 #' @export
 skPartialPCA_step = function(mat, n_components, obj) {
  if (is(mat, "matrix")) {
@@ -34,8 +33,10 @@ skPartialPCA_step = function(mat, n_components, obj) {
     }
  if (missing(n_components)) n_components = as.integer(
      min(c(nc,nr)))
- if (missing(obj)) 
-    obj = SklearnEls()$skd$IncrementalPCA(n_components=n_components)
+ if (missing(obj)) {
+    skd <- reticulate::import("sklearn.decomposition", delay_load=TRUE)
+    obj = skd$IncrementalPCA(n_components=n_components)
+    }
  obj$partial_fit(mat)
 }
 
@@ -65,7 +66,7 @@ submatGenerator = function(srcfun, rows, cols) {
 #' @param chunksize integer number of samples per step
 #' @param n_components integer number of PCs to compute
 #' @param assayind not used, assumed set to 1
-#' @param picklePath if non-null, incremental results saved here via sklearn.externals.joblib.dump, for each chunk.  If NULL, no saving of incremental results.
+#' @param picklePath if non-null, incremental results saved here via joblib.dump, for each chunk.  If NULL, no saving of incremental results.
 #' @param matTx a function defaulting to force() that accepts a matrix and returns a matrix with identical dimensions, e.g., \code{function(x) log(x+1)}
 #' @param \dots not used
 #' @import SummarizedExperiment
@@ -77,12 +78,11 @@ submatGenerator = function(srcfun, rows, cols) {
 #' acquire chunk of assay data
 #' and transpose before computing PCA contributions.
 #' In case of crash, restore from \code{picklePath} using
-#' \code{SklearnEls()$joblib$load} after loading reticulate.  You can
+#' \code{joblib$load} after loading reticulate.  You can
 #' use the \code{n_samples_seen_} component of the restored
 #' python reference to determine where to restart.
 #' You can manage resumption using \code{skPartialPCA_step}.
 #' @examples
-#' \dontrun{
 #' # demo SE made with TENxGenomics:
 #' # mm = matrixSummarizedExperiment(h5path, 1:27998, 1:750)
 #' # saveHDF5SummarizedExperiment(mm, "tenx_750")
@@ -94,7 +94,6 @@ submatGenerator = function(srcfun, rows, cols) {
 #'   round(cor(pypc <- lit$transform(dat <- t(as.matrix(assay(se750[,1:50]))))),3)
 #'   rpc = prcomp(dat)
 #'   round(cor(rpc$x[,1:4], pypc), 3)
-#' }
 #' } # this has to be made basilisk-compliant
 #' @exportMethod skIncrPPCA
 setGeneric("skIncrPPCA", function(se, chunksize, n_components, assayind=1, picklePath="./skIdump.pkl", matTx = force, ...) 
@@ -108,17 +107,18 @@ setMethod("skIncrPPCA", "SummarizedExperiment",
    colvec = seq_len(ncol(se))
    chs = biosk_chunk(colvec, chunk.size=chunksize)
    matgen = function(rows, cols) t(matTx(as.matrix(assay(se[rows, cols])))) # assayind handling?
+   joblib = reticulate::import("joblib", delay_load=TRUE)  # could lead to trouble 6/2022
    cur = skPartialPCA_step(
       submatGenerator( matgen, rowvec, chs[[1]] ), n_components )
    if (!is.null(picklePath)) {
       message(paste("Will save pickled interim per-chunk results in", picklePath))
-      SklearnEls()$joblib$dump(cur, filename=picklePath)
+      joblib$dump(cur, filename=picklePath)
       }
    for (i in 2:length(chs)) { 
       cat(i)
       cur = skPartialPCA_step(
         submatGenerator( matgen, rowvec, chs[[i]]), n_components, cur)
-      if (!is.null(picklePath)) SklearnEls()$joblib$dump(cur, filename=picklePath)
+      if (!is.null(picklePath)) joblib$dump(cur, filename=picklePath)
       }
    cur
 })

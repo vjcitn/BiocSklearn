@@ -8,17 +8,9 @@
 #' @return matrix with rotation
 #' @examples
 #' dem = skIncrPCA(iris[,1:4], batch_size=25L)
-#' \dontrun{
-#' # this is the unsupported way
-#' irloc = system.file("csv/iris.csv", package="BiocSklearn")
-#' irismat = SklearnEls()$np$genfromtxt(irloc, delimiter=',')
-#' ski = skIncrPCA(irismat)
-#' ski25 = skIncrPCA(irismat, batch_size=25L) # non-default
-#' getTransformed(ski)[1:3,]
-#' getTransformed(ski25)[1:3,]
-#' } # end dontrun
-#' dem = skIncrPCA(iris[,1:4], batch_size=25L, n_components=2L)
+#' dem2 = skIncrPCA(iris[,1:4], batch_size=25L, n_components=2L)
 #' dem
+#' dem2
 #' @export
 skIncrPCA = function(mat, n_components=2L, batch_size=5L, ...) {
  proc = basilisk::basiliskStart(bsklenv)
