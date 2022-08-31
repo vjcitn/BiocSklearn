@@ -1,7 +1,7 @@
 Package: BiocSklearn
 Title: interface to python sklearn via Rstudio reticulate
 Description: This package provides interfaces to selected sklearn elements, and demonstrates fault tolerant use of python modules requiring extensive iteration.
-Version: 1.19.2
+Version: 1.19.6
 Authors@R: 
     c(person("Vince", "Carey", email="stvjc@channing.harvard.edu",
     role=c("cre", "aut")))
@@ -11,7 +11,7 @@ Imports: basilisk
 License: Artistic-2.0
 LazyLoad: yes
 biocViews: StatisticalMethod, DimensionReduction, Infrastructure
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 VignetteBuilder: knitr
 SystemRequirements: python (>= 2.7), sklearn, numpy, pandas, h5py
 Roxygen: list(markdown=TRUE)
