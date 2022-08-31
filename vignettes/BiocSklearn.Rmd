@@ -178,9 +178,10 @@ in which
 >>> for chunk in gen:
 ...     print(chunk)
 ```
-cannot be done with reticulate in a certain docker container application.
+cannot be done in a certain docker container application.
 
-We introduce the following function in BiocSklearn/R:
+We introduce the following function in BiocSklearn/R, 
+omitting the 'chunked' element:
 ```
 skPWD = function(mat, ...) {
  proc = basilisk::basiliskStart(bsklenv) # avoid package-specific import
@@ -198,7 +199,7 @@ skPWD = function(mat, ...) {
 # necessary for python module control
 bsklenv <- basilisk::BasiliskEnvironment(envname="bsklenv",
     pkgname="BiocSklearn",
-    packages=c("python==3.8.10", "scikit-learn==1.1.0", "h5py==3.7.0", "pandas==1.4.3", "joblib==1.1.0"))
+    packages=c("scikit-learn==1.0.2", "h5py==3.6.0", "pandas==1.3.5", "joblib==1.0.0"))
 
 ```
 
