@@ -165,38 +165,7 @@ in this BiocSklearn package.  A reference to the
 dataset through the h5py File interface is created by
 `H5matref`.
 
-
-See skPartialPCA_h5 for basilisk interface.
-```{r lkmref,eval=TRUE}
-fn = system.file("ban_6_17/assays.h5", package="BiocSklearn")
-ban = H5matref(fn)
-ban 
-```
-We will explicitly define the numpy matrix.
-```{r getmmm,eval=TRUE}
-np = import("numpy", convert=FALSE) # ensure
-ban$shape
-```
-We'll treat genes as records and individuals
-as features.
-```{r dotx,eval=TRUE}
-ban2 = np$matrix(ban)$T
-```
-We'll define three chunks of the data and update
-the partial PCA contributions in the object `st`.
-```{r dopart, eval=TRUE}
-st = skPartialPCA_step(ta(ban2, 0:999, 0L))
-st = skPartialPCA_step(ta(ban2, 1000:10999, 0L), obj=st)
-st = skPartialPCA_step(ta(ban2, 11000:44559, 0L), obj=st)
-sss = st$transform(ban2)
-```
-Verify against the standard PCA, checking correlation
-between the projections to the first four PCs.
-```{r dover, eval=TRUE}
-iii = skPCA(ban2)
-dim(getTransformed(iii))
-round(cor(sss[,1:4], getTransformed(iii)[,1:4]),3)
-```
+Please run `example(H5matref)` for illustration.
 
 ## How to expand scope of BiocSklearn
 

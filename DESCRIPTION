@@ -1,12 +1,12 @@
 Package: BiocSklearn
 Title: interface to python sklearn via Rstudio reticulate
 Description: This package provides interfaces to selected sklearn elements, and demonstrates fault tolerant use of python modules requiring extensive iteration.
-Version: 1.19.6
+Version: 1.19.7
 Authors@R: 
     c(person("Vince", "Carey", email="stvjc@channing.harvard.edu",
     role=c("cre", "aut")))
 Suggests: testthat, restfulSE, HDF5Array, BiocStyle, rmarkdown, knitr
-Depends: R (>= 4.0), reticulate, methods, SummarizedExperiment
+Depends: R (>= 4.0), rlang, reticulate, methods, SummarizedExperiment
 Imports: basilisk
 License: Artistic-2.0
 LazyLoad: yes

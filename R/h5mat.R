@@ -71,8 +71,12 @@ H5matref = function(filename, dsname="assay001") {
  proc = basilisk::basiliskStart(bsklenv)
  on.exit(basilisk::basiliskStop(proc))
  basilisk::basiliskRun(proc, function(filename, dsname) {
-  py_run_string("import h5py")
-  py_run_string(paste0("f = h5py.File('", filename, "', mode='r')"))
-  mref = py_run_string(paste0("g = f['", dsname, "']"))
-  mref$g }, filename=filename, dsname=dsname)
+#  py_run_string("import h5py")
+#  py_run_string(paste0("f = h5py.File('", filename, "', mode='r')"))
+#  mref = py_run_string(paste0("g = f['", dsname, "']"))
+#  mref$g }, filename=filename, dsname=dsname)
+   h5py = reticulate::import("h5py")
+   f = h5py$File(filename, mode='r')
+   f[ dsname ]
+   }, filename=filename, dsname=dsname)
 }
