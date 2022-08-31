@@ -53,6 +53,7 @@ You can manage resumption using \code{skPartialPCA_step}.
 # mm = matrixSummarizedExperiment(h5path, 1:27998, 1:750)
 # saveHDF5SummarizedExperiment(mm, "tenx_750")
 #
+if (FALSE) {
 if (requireNamespace("HDF5Array")) {
   se750 = HDF5Array::loadHDF5SummarizedExperiment(
      system.file("hdf5/tenx_750", package="BiocSklearn"))
@@ -61,4 +62,5 @@ if (requireNamespace("HDF5Array")) {
   rpc = prcomp(dat)
   round(cor(rpc$x[,1:4], pypc), 3)
 } # this has to be made basilisk-compliant
+} # and is blocked until then
 }
