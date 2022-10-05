@@ -47,7 +47,7 @@ setMethod("getTransformed", "SkDecomp", function(x) x@transform)
 #' head(prcomp(data.matrix(iris[,1:4]))$x)
 #' @export
 skPCA = function(mat, ...) {
- proc = basilisk::basiliskStart(bsklenv) # avoid package-specific import
+ proc = basilisk::basiliskStart(bsklenv, testload="scipy") # avoid package-specific import
  on.exit(basilisk::basiliskStop(proc))
  basilisk::basiliskRun(proc, function(mat, ...) {
      sk = reticulate::import("sklearn") 
