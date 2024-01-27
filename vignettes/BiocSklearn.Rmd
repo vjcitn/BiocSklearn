@@ -34,6 +34,7 @@ procedure.
 suppressPackageStartupMessages({
 library(BiocSklearn)
 library(BiocStyle)
+example(skPCA) # to ensure you can build from scratch, otherwise import("numpy") fails
 })
 ```
 
@@ -85,6 +86,7 @@ of effort required to convert data from R to python
 for natural use in each language.
 
 ```{r doimp, eval=TRUE}
+library(BiocSklearn)
 np = reticulate::import("numpy", convert=FALSE, delay_load=TRUE)
 irloc = system.file("csv/iris.csv", package="BiocSklearn")
 irismat = np$genfromtxt(irloc, delimiter=',')

@@ -54,8 +54,8 @@ ans2 = skKMeans(np$array(ds)$T, n_clusters=2L) # HDF5 matrix is transposed relat
 table(ans$labels, ans2$labels)
 ans3 = skKMeans(np$array(ds)$T, 
    n_clusters=8L, max_iter=200L, 
-   algorithm="full", random_state=20L)
-dem = skKMeans(iris[,1:4], n_clusters=3L, max_iter=100L, algorithm="full",
+   algorithm="lloyd", random_state=20L)
+dem = skKMeans(iris[,1:4], n_clusters=3L, max_iter=100L, algorithm="lloyd",
    random_state=20L)
 str(dem)
 tab = table(iris$Species, dem$labels)
